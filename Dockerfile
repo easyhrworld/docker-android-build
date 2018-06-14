@@ -111,5 +111,8 @@ RUN echo "installing sdk tools" && \
     "extras;google;m2repository"
 
 # Copy sdk license agreement files.
-RUN mkdir -p $ANDROID_HOME/licenses
+RUN mkdir -p $ANDROID_HOME/licenses 
 COPY sdk/licenses/* $ANDROID_HOME/licenses/
+
+#SSH keys
+RUN mkdir ~/.ssh/
