@@ -114,5 +114,8 @@ RUN echo "installing sdk tools" && \
 RUN mkdir -p $ANDROID_HOME/licenses 
 COPY sdk/licenses/* $ANDROID_HOME/licenses/
 
+#allow writing updates in opt
+RUN chmod 777 ${ANDROID_SDK_HOME}
+
 #SSH keys
 RUN mkdir ~/.ssh/
