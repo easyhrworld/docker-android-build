@@ -115,7 +115,22 @@ RUN mkdir -p $ANDROID_HOME/licenses
 COPY sdk/licenses/* $ANDROID_HOME/licenses/
 
 #allow writing updates in opt
-RUN chmod 777 ${ANDROID_SDK_HOME}
+RUN chmod -R 777 ${ANDROID_SDK_HOME}
 
 #SSH keys
-RUN mkdir ~/.ssh/
+RUN mkdir ~/.ssh/ && \
+    chmod -R 777 ~/.ssh
+
+#Change permissions
+ENV RUN_USER jenkins
+ENV RUN_UID 10000
+
+RUN id $RUN_USER || adduser --uid "$RUN_UID" \
+    --gecos 'Jenkins' \
+    --shell '/bin/sh' \
+    --disabled-login \
+    --disabled-password "$RUN_USER"
+
+RUN chown -R $RUN_USER:$RUN_USER $ANDROID_HOME $ANDROID_SDK_HOME $ANDROID_NDK_HOME
+RUN chmod -R a+rx $ANDROID_HOME $ANDROID_SDK_HOME $ANDROID_NDK_HOME
+USER $RUN_USER
